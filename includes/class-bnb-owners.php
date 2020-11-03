@@ -130,6 +130,7 @@ class Bnb_Owners
 		 * sides of the site.
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-bnb-api.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/partials/bnb-owners-date-selector.php';
 
 
 		$this->loader = new Bnb_Owners_Loader();
@@ -184,6 +185,10 @@ class Bnb_Owners
 
 		//Initialize our Rooms Shortcode
 		$this->loader->add_action('admin_init', $plugin_shared, 'register_api_room_results_shortcode');
+
+
+		//API Listeners for requests
+		$this->loader->add_action('admin_init', $plugin_shared, 'process_date_selector');
 	}
 
 	/**
@@ -202,6 +207,10 @@ class Bnb_Owners
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		$this->loader->add_action('init', $plugin_shared, 'register_api_room_results_shortcode');
+		
+		$this->loader->add_action('wp_ajax_nopriv_process_date_selector', $plugin_shared, 'process_date_selector');
+		
+
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 
-
+require_once plugin_dir_path(dirname(__FILE__)) . 'includes/partials/bnb-owners-date-selector.php';
 class Bnb_Owners_API
 {
     /**
@@ -130,7 +130,12 @@ class Bnb_Owners_API
 
     public function parse_get_room_details()
     {
+        
+        
+        $this->date_selector = new date_selector();
+
         $results = $this->get_room_details();
+
 
         // WHILE($results){
         // 	  $results = $results['price'];
@@ -172,11 +177,37 @@ class Bnb_Owners_API
             ";
         }
 
-        return $resultsStyled;
+        $returnTest = $this->date_selector->display_date_selector();
+
+        return $returnTest;
     }
 
     public function register_api_room_results_shortcode()
     {
         add_shortcode('display_rooms', array($this, 'parse_get_room_details'));
     }
+
+    public function process_date_selector(){
+         echo json_encode('Here');
+        //Verify the nonce value passed
+        // if (!wp_verify_nonce($_REQUEST['nonce'], "start_date_nonce")) {
+        //     exit("Duplicate Request");
+        // }
+
+        //Get our passed value
+        $startDate = "success";
+
+        // echo json_encode("result");
+
+        //decide whether to return it as JSON or not
+        // if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        //     $result = json_encode($startDate);
+        //     echo $result;
+        // } else {
+        //     header("Location: " . $_SERVER["HTTP_REFERER"]);
+        // }
+
+        die();
+    }
+
 }
