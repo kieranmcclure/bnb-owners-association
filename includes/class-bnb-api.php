@@ -189,13 +189,19 @@ class Bnb_Owners_API
 
     public function process_date_selector(){
          echo json_encode('Here');
-        //Verify the nonce value passed
-        // if (!wp_verify_nonce($_REQUEST['nonce'], "start_date_nonce")) {
-        //     exit("Duplicate Request");
-        // }
+         echo json_encode($_POST);
 
-        //Get our passed value
-        $startDate = "success";
+         //Catch our passed values
+         $start_date = sanitize_text_field($_POST['start_date']);
+         $end_date = sanitize_text_field($_POST['end_date']);
+
+        //Verify the nonce value passed
+        if (!wp_verify_nonce($_REQUEST['nonce'], "start_date_nonce")) {
+            exit("Error in request, NONCE doesn't match");
+        }
+
+        echo $start_date;
+        echo $end_date;
 
         // echo json_encode("result");
 

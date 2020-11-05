@@ -30,23 +30,30 @@ class date_selector extends Bnb_Owners_API
         $html = '
 
             <label for="start_date" name="start_date_label">Start Date</label>
-            <input type="text" name="start_date" class="start_date" data-nonce="' . $nonce . '" href="' . $link . '">
-                <a class="check_availability" href="' . $link . '" data-nonce="' . $nonce . '">Start Date</a>
+            <input type="date" name="start_date" class="start_date" data-nonce="' . $nonce . '">
             </input>
-
+            <br>
+            <label for="end_date" name="end_date_label">End Date</label>
+            <input type="date" name="end_date" class="end_date" data-nonce="' . $nonce . '">
+            </input>
+            <br>
+            <a class="check_availability" href="' . $link . '" data-nonce="' . $nonce . '">Start Date</a>
 
         <script>
             jQuery(document).ready( function() {
                 jQuery(".check_availability").click( function(e) {
                     e.preventDefault();
                     nonce = jQuery(this).attr("data-nonce")
-
+                    start_date = jQuery(".start_date").val();
+                    end_date = jQuery(".end_date").val();
                     jQuery.ajax({
                         type: "post",
                         dataType: "json",
                         url: "'. $linkAJAX . '",
                         data: {
                             action: "process_date_selector",
+                            start_date: start_date,
+                            end_date: end_date,
                             nonce: nonce
                         },
                         success: function(response) {
