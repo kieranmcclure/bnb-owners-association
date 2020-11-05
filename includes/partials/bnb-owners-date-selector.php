@@ -37,7 +37,9 @@ class date_selector extends Bnb_Owners_API
             <input type="date" name="end_date" class="end_date" data-nonce="' . $nonce . '">
             </input>
             <br>
-            <a class="check_availability" href="' . $link . '" data-nonce="' . $nonce . '">Start Date</a>
+            <a class="check_availability" data-nonce="' . $nonce . '">Check Dates</a>
+
+            <div class="availableRooms"></div>
 
         <script>
             jQuery(document).ready( function() {
@@ -50,6 +52,7 @@ class date_selector extends Bnb_Owners_API
                         type: "post",
                         dataType: "json",
                         url: "'. $linkAJAX . '",
+                        
                         data: {
                             action: "process_date_selector",
                             start_date: start_date,
@@ -58,7 +61,12 @@ class date_selector extends Bnb_Owners_API
                         },
                         success: function(response) {
                            
-                                console.log(response);
+                               console.log(response);
+
+                                
+                                 jQuery(".availableRooms").append(JSON.stringify(response));
+                                
+
                             
                         }
                     })

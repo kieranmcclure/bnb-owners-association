@@ -1,6 +1,8 @@
 <?php
 
 require_once plugin_dir_path(dirname(__FILE__)) . 'includes/partials/bnb-owners-date-selector.php';
+$curDate = date('Y-m-d');
+
 class Bnb_Owners_API
 {
     /**
@@ -77,17 +79,17 @@ class Bnb_Owners_API
      * @since 1.0.0
      */
 
-    public function get_room_details()
+    public function get_room_details($start_date = 0, $end_date = 0)
     {
         //Get all results for now
         $this->options = get_option('options');
         $bnb_id = esc_attr($this->options['bnb_id']);
 
         //TEMP Arrival
-        $arrival = "2020-12-19";
+        $arrival = $start_date;
 
         //TEMP DEPARTURE
-        $departure = "2020-12-24";
+        $departure = $end_date;
 
         $query = "
 			SELECT
@@ -188,9 +190,7 @@ class Bnb_Owners_API
     }
 
     public function process_date_selector(){
-         echo json_encode('Here');
-         echo json_encode($_POST);
-
+        
          //Catch our passed values
          $start_date = sanitize_text_field($_POST['start_date']);
          $end_date = sanitize_text_field($_POST['end_date']);
@@ -200,8 +200,17 @@ class Bnb_Owners_API
             exit("Error in request, NONCE doesn't match");
         }
 
-        echo $start_date;
-        echo $end_date;
+        // echo $start_date;
+        // echo $end_date;
+
+
+        //Call our Check Rooms function
+        if(isset($start_date) && isset($end_date)){
+            $availability = $this->get_room_details($start_date, $end_date);
+            echo json_encode($availability);
+        }
+
+        
 
         // echo json_encode("result");
 
