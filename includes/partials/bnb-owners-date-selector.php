@@ -30,16 +30,63 @@ class date_selector extends Bnb_Owners_API
         $html = '
 
             <label for="start_date" name="start_date_label">Start Date</label>
-            <input type="date" name="start_date" class="start_date" data-nonce="' . $nonce . '">
+            <input type="date" name="start_date" value="2020-11-10" class="start_date" data-nonce="' . $nonce . '">
             </input>
             <br>
             <label for="end_date" name="end_date_label">End Date</label>
-            <input type="date" name="end_date" class="end_date" data-nonce="' . $nonce . '">
+            <input type="date" name="end_date"value="2020-11-18" class="end_date" data-nonce="' . $nonce . '">
             </input>
             <br>
             <a class="check_availability" data-nonce="' . $nonce . '">Check Dates</a>
 
-            <div class="availableRooms"></div>
+            <div class="availableRooms">
+                <div class="availableHeader"></div>
+                <div class="availableBody">
+
+                </div>
+            </div>
+
+            <style>
+                .availableHeader{
+                    background: #222222;
+                }
+
+                .availableNight{
+                    clear: both;
+                    display: flex;
+                }
+
+                .availableNight .roomName{
+                    max-width: 30%;
+                    display: flex;
+                    float: left;
+                    border-left: 1px solid #efefef;
+                    border-top: 1px solid #efefef;
+                    border-right: 1px solid #efefef;
+                    padding: 5px;
+                    flex: 1;
+                }
+
+                .nights{
+                    display: flex;
+                    width: 70%;
+                    float: left;
+                    flex: 1;
+                }
+
+                .nights div{
+                    flex: 1;
+                    display: flex;
+                    /* border-left: 1px solid #efefef; */
+                    border-top: 1px solid #efefef;
+                    border-right: 1px solid #efefef;
+                    padding: 5px;
+                    vertical-align: middle;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+            </style>
 
         <script>
             jQuery(document).ready( function() {
@@ -61,10 +108,46 @@ class date_selector extends Bnb_Owners_API
                         },
                         success: function(response) {
                            
-                               console.log(response);
+                            //    console.log(response);
 
+                                    for(var i = 0; i < response.length; i++){
+                                        console.log(response[i]);
+
+                                            var nights = [];
+                                             nights[i] = [];
+                                            for(var j = 0; j < response[i]["available"]; j++){
+                                               
+                                                nights[i][j] = `<div class="night` + j + `">&euro;` + (response[i]["price"].toString() / response[i]["nights"].toString()) + `</div>`;
+
+                                                
+                                            }
+                                            //  console.log(nights[i]);
+                                             var returnBody = `
+                                                <div class="availableNight">
+                                                    <div class="roomName">` + response[i]["name_room"] + `</div>
+                                                    <div class="nights">` + nights[i].join("") + `</div>
+                                                    
+                                                </div>
+                                            `;
+
+                                           
+                                            
+                                            jQuery(".availableBody").append(returnBody);
+                                    }
                                 
-                                 jQuery(".availableRooms").append(JSON.stringify(response));
+                               
+                                    // jQuery.each(response, function(k, v){
+                                    //     // jQuery(".availableRooms").append(k);
+                                    //     // console.log("Key: " + k + " Value: " + v);
+                                    //     console.log(k.name_room);
+                                    //     var name_room;
+                                    //     if(k.name_room == "name_room"){
+                                    //         var name_room = k;
+                                    //     }
+
+
+                                   
+                                    // });
                                 
 
                             
