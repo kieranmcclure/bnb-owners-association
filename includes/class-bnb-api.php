@@ -178,8 +178,8 @@ class Bnb_Owners_API
                 </div>
             ";
         }
-
-        $returnTest = $this->date_selector->display_date_selector();
+        $bnb_id = esc_attr($this->options['bnb_id']);
+        $returnTest = $this->date_selector->display_date_selector($bnb_id);
 
         return $returnTest;
     }
